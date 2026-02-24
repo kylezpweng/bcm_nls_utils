@@ -2,7 +2,8 @@ const config = require("./config");
 const fs = require("fs");
 
 async function downloadSingleFile(module, lang) {
-  const { api, owner, repo, branch, token } = config.git;
+  const token = process.env.token;
+  const { api, owner, repo, branch } = config.git;
   const path = `src/pages/${module}/i18n/${lang.toLowerCase()}.ts`;
   try {
     const url = `${api}/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
@@ -41,7 +42,8 @@ async function downloadSingleFile(module, lang) {
 
 async function commitFile2Git(module, lang, sha, content) {
   const encodedContent = Buffer.from(content).toString("base64");
-  const { api, owner, repo, branch, token } = config.git;
+  const token = process.env.token;
+  const { api, owner, repo, branch } = config.git;
   const path = `src/pages/${module}/i18n/${lang.toLowerCase()}.ts`;
   try {
     const url = `${api}/repos/${owner}/${repo}/contents/${path}`;

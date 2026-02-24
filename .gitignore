@@ -5,3 +5,4 @@ package-lock.json
 /output/
 /source/
 /xlsx/
+.env
