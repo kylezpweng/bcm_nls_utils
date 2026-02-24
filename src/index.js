@@ -7,6 +7,7 @@ require("dotenv").config();
 const LANGUAGES = ["EN", "SC", "TC"];
 
 function formatData(data) {
+  console.log("Formatting data...");
   const moduleMap = new Map();
 
   for (const sheetData of data) {

@@ -2,6 +2,8 @@ const fs = require("fs");
 const XLSX = require("xlsx");
 
 function readExcelFile(filePath) {
+  console.log(`Reading Excel file: ${filePath}`);
+
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
   }

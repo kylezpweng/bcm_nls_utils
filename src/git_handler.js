@@ -4,7 +4,6 @@ require("dotenv").config();
 
 async function downloadSingleFile(module, lang) {
   const token = process.env.token;
-  console.log(token);
   const { api, owner, repo, branch } = config.git;
   const path = `src/pages/${module}/i18n/${lang.toLowerCase()}.ts`;
   try {
@@ -68,35 +67,10 @@ async function commitFile2Git(module, lang, sha, content) {
         `Request failed: ${response.status} ${response.statusText}`
       );
     }
-
-    // const data = await response.json();
-    // console.log(data);
   } catch (error) {
     console.error("Failed to commit the file", error);
     throw error;
   }
 }
-
-// const content = `export default {
-//   "login_terms_header": "Notice",
-//   "login_terms_introText": "Thank you for download the BEA Corporate Banking Mobile App. Please read and the Terms & Conditions for Corporate Cyberbanking and BEA Corporate Online Services and the Bank's Personal Data (Privacy) Ordinance - Personal Information Collection (Customers) Statement and select \"I have read and agreed\" to user our app.",
-//   "login_terms_sectionHeader": "Terms & Conditions",
-//   "login_terms_checkbox": "I have read and agreed",
-//   "login_terms_button": "Continue",
-//   "login_index_header": "Log in",
-//   "login_index_accountNumber": "Account Number",
-//   "login_index_userName": "User Name",
-//   "login_index_pin": "PIN",
-//   "login_index_button": "Continue",
-//   "login_index_forgotPin": "Forgot your PIN?",
-//   "login_index_pinActivation": "PIN Activation",
-//   "login_index_resetPin": "Request reset PIN"
-// }`;
-// commitFile2Git(
-//   "login",
-//   "en",
-//   "b1c6ea436a540020ff61f01dea449d5b39367b27",
-//   content
-// );
 
 module.exports = { downloadSingleFile, commitFile2Git };

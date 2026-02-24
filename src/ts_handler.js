@@ -21,6 +21,7 @@ function writeTsFile(module, lang, obj) {
   const filePath = `${dir}/${lang.toLowerCase()}.ts`;
   const fileContent = `export default ${JSON.stringify(obj, null, 2)}`;
   fs.writeFileSync(filePath, fileContent);
+  console.log(`Written file: ${filePath}`);
 
   return fileContent;
 }
