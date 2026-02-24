@@ -2,6 +2,7 @@ const config = require("./config");
 const { parseTsFile, writeTsFile } = require("./ts_handler");
 const { readExcelFile } = require("./xlsx_handler");
 const { downloadSingleFile, commitFile2Git } = require("./git_handler");
+require("dotenv").config();
 
 const LANGUAGES = ["EN", "SC", "TC"];
 

@@ -1,8 +1,10 @@
 const config = require("./config");
 const fs = require("fs");
+require("dotenv").config();
 
 async function downloadSingleFile(module, lang) {
   const token = process.env.token;
+  console.log(token);
   const { api, owner, repo, branch } = config.git;
   const path = `src/pages/${module}/i18n/${lang.toLowerCase()}.ts`;
   try {
