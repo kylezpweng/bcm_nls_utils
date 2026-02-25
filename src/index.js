@@ -40,13 +40,13 @@ function createKey(module, page, item) {
 
 function toCamelCase(str) {
   return str
-    .split(/\s+/) // 按空格分割
-    .filter((word) => word) // 过滤空字符串
+    .split(/\s+/)
+    .filter((word) => word)
     .map((word, index) => {
       if (index === 0) {
-        return word.toLowerCase(); // 首字母小写
+        return word.toLowerCase();
       }
-      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(); // 后续单词首字母大写
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     })
     .join("");
 }
