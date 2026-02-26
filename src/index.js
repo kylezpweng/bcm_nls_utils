@@ -71,7 +71,7 @@ async function execute() {
       const content = { ...oldObj, ...newObj };
       const fileContent = writeTsFile(module, lang, content);
 
-      if (!config.isCommit) continue;
+      if (!config.isCommit || !sha) continue;
       await commitFile2Git(module, lang, sha, fileContent);
     }
   }

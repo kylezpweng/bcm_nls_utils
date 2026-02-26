@@ -1,9 +1,17 @@
 const fs = require("fs");
 const path = require("path");
+const config = require("./config");
 require("ts-node").register();
 
 function parseTsFile(module, lang) {
-  const filePath = `./source/${module}/${lang.toLowerCase()}.ts`;
+  let filePath;
+  if (config.localSource) {
+    filePath = `${
+      config.localSource
+    }/pages/${module}/i18n/${lang.toLowerCase()}.ts`;
+  } else {
+    filePath = `./source/${module}/${lang.toLowerCase()}.ts`;
+  }
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
   }
