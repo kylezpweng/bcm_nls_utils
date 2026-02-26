@@ -8,9 +8,11 @@ This project is a powerful script that converts NLS (National Language Support) 
 - **Smart Key Generation**: Creates consistent camelCase keys from Module, Page, and Item names
 - **Data Merging**: Merges new translations with existing ones, updating only changed values
 - **GitHub Integration**: Downloads existing files from GitHub and commits changes back
+- **Local Source Support**: Optionally uses local source files instead of GitHub
 - **Multi-language Support**: Supports EN (English), SC (Simplified Chinese), and TC (Traditional Chinese)
 - **Error Handling**: Detects and throws errors for duplicate keys
 - **Directory Management**: Automatically creates necessary directories
+- **Environment Variables**: Uses dotenv for secure configuration
 
 ## 🚀 Quick Start
 
@@ -26,20 +28,28 @@ Edit `src/config.js` with your project information:
 
 ```javascript
 module.exports = {
-  input: "xlsx/nls_20260213_1.xlsx", // Path to your Excel file
+  input: "xlsx/nls_20260225_2.xlsx", // Path to your Excel file
   source: "source", // Directory for downloaded files
+  localSource: "/Users/kyleweng/Documents/workspace/bcm_web/src", // Local source directory (optional)
   git: {
     api: "https://api.github.com",
     owner: "kylezpweng", // Your GitHub username
     repo: "bcm_web", // Your GitHub repository
     branch: "main", // Branch to work with
-    token: "your-github-token", // Your GitHub personal access token
   },
   isCommit: false, // Set to true to enable GitHub commits
 };
 ```
 
-### 3. Prepare Your Excel File
+### 3. Set Up Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+token=your-github-personal-access-token
+```
+
+### 4. Prepare Your Excel File
 
 Create an Excel file with the following columns:
 
@@ -53,7 +63,7 @@ Create an Excel file with the following columns:
 | SC     | Simplified Chinese  | `登录`         |
 | TC     | Traditional Chinese | `登錄`         |
 
-### 4. Run the Script
+### 5. Run the Script
 
 ```bash
 npm start
@@ -69,39 +79,21 @@ bcm_nls_utils/
 │   ├── ts_handler.js      # TypeScript file handler
 │   ├── xlsx_handler.js    # Excel file handler
 │   └── git_handler.js     # GitHub API handler
-├── output/                # Generated TypeScript files
-│   ├── module1/
-│   │   ├── en.ts
-│   │   ├── sc.ts
-│   │   └── tc.ts
-│   └── module2/
-│       ├── en.ts
-│       ├── sc.ts
-│       └── tc.ts
-├── source/                # Files downloaded from GitHub
-│   ├── module1/
-│   │   ├── en.ts
-│   │   ├── sc.ts
-│   │   └── tc.ts
-│   └── module2/
-│       ├── en.ts
-│       ├── sc.ts
-│       └── tc.ts
-├── xlsx/                  # Excel files
-│   └── nls_20260213_1.xlsx
-├── package.json
-└── README.md
+├── .env                   # Environment variables (gitignore this file)
+├── package.json           # Project dependencies
+└── README.md              # This documentation
 ```
 
 ## 🔧 How It Works
 
-1. **Read Excel File**: Reads NLS data from the configured Excel file
-2. **Format Data**: Organizes data by module and generates unique keys
-3. **Key Generation**: Creates camelCase keys using `toCamelCase()` function
-4. **Download From GitHub**: Downloads existing TypeScript files from GitHub
-5. **Merge Data**: Combines new translations with existing ones
-6. **Write TypeScript Files**: Generates new TypeScript files with merged data
-7. **Commit to GitHub**: Optionally commits changes back to GitHub
+1. **Load Environment Variables**: Reads GitHub token from `.env` file
+2. **Read Excel File**: Reads NLS data from the configured Excel file
+3. **Format Data**: Organizes data by module and generates unique keys
+4. **Key Generation**: Creates camelCase keys using `toCamelCase()` function
+5. **Download From GitHub**: Downloads existing TypeScript files from GitHub
+6. **Merge Data**: Combines new translations with existing ones
+7. **Write TypeScript Files**: Generates new TypeScript files with merged data
+8. **Commit to GitHub**: Optionally commits changes back to GitHub
 
 ## 🎯 Key Functions
 
@@ -134,16 +126,16 @@ bcm_nls_utils/
 
 ## ⚙️ Configuration Options
 
-| Option       | Description                    | Default                    |
-| ------------ | ------------------------------ | -------------------------- |
-| `input`      | Path to Excel file             | `xlsx/nls_20260213_1.xlsx` |
-| `source`     | Directory for downloaded files | `source`                   |
-| `git.api`    | GitHub API endpoint            | `https://api.github.com`   |
-| `git.owner`  | GitHub username                | `kylezpweng`               |
-| `git.repo`   | GitHub repository name         | `bcm_web`                  |
-| `git.branch` | GitHub branch                  | `main`                     |
-| `git.token`  | GitHub personal access token   | -                          |
-| `isCommit`   | Enable GitHub commits          | `false`                    |
+| Option        | Description                    | Default                                           |
+| ------------- | ------------------------------ | ------------------------------------------------- |
+| `input`       | Path to Excel file             | `xlsx/nls_20260225_2.xlsx`                        |
+| `source`      | Directory for downloaded files | `source`                                          |
+| `localSource` | Local source directory path    | `/Users/kyleweng/Documents/workspace/bcm_web/src` |
+| `git.api`     | GitHub API endpoint            | `https://api.github.com`                          |
+| `git.owner`   | GitHub username                | `kylezpweng`                                      |
+| `git.repo`    | GitHub repository name         | `bcm_web`                                         |
+| `git.branch`  | GitHub branch                  | `main`                                            |
+| `isCommit`    | Enable GitHub commits          | `false`                                           |
 
 ## 🔐 GitHub Token Setup
 
@@ -151,7 +143,7 @@ bcm_nls_utils/
 2. Click "Generate new token"
 3. Select "repo" scope (required for repository access)
 4. Generate the token and copy it
-5. Update `src/config.js` with your token
+5. Add it to your `.env` file as `token=your-token-here`
 
 ## 📊 Excel File Format
 
@@ -185,11 +177,33 @@ Your Excel file should have the following structure:
 - **Cause**: File or repository doesn't exist
 - **Solution**: Verify repository path and file location
 
-## 📈 Performance
+### 5. `Error: ENOENT: no such file or directory`
+
+- **Cause**: Excel file or directory doesn't exist
+- **Solution**: Check the file paths in `config.js`
+
+## � Dependencies
+
+| Dependency  | Version | Purpose                       |
+| ----------- | ------- | ----------------------------- |
+| @types/node | ^25.2.3 | TypeScript type definitions   |
+| dotenv      | ^17.3.1 | Load environment variables    |
+| ts-node     | ^10.9.2 | Run TypeScript files directly |
+| typescript  | ^5.9.3  | TypeScript compiler           |
+| xlsx        | ^0.18.5 | Excel file parsing            |
+
+## �📈 Performance
 
 - **Time Complexity**: O(n) for data processing (using Map instead of Array.find)
 - **Memory Usage**: Efficiently handles large Excel files
 - **API Calls**: Minimizes GitHub API requests
+
+## 🔒 Security Best Practices
+
+- **Never commit `.env` file**: Add it to `.gitignore`
+- **Use environment variables**: Store sensitive information in `.env`
+- **Limit token permissions**: Only grant necessary `repo` scope
+- **Rotate tokens regularly**: Update your GitHub token periodically
 
 ## 🤝 Contributing
 
