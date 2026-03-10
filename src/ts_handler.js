@@ -6,9 +6,9 @@ require("ts-node").register();
 function parseTsFile(module, lang) {
   let filePath;
   if (config.localSource) {
-    filePath = `${
-      config.localSource
-    }/pages/${module}/i18n/${lang.toLowerCase()}.ts`;
+    filePath = `${config.localSource}${
+      module === "assets" ? "" : "/pages"
+    }/${module}/i18n/${lang.toLowerCase()}.ts`;
   } else {
     filePath = `./source/${module}/${lang.toLowerCase()}.ts`;
   }
@@ -62,7 +62,7 @@ function writeTsFile(module, lang, obj) {
     fs.mkdirSync(dir, { recursive: true });
   }
   const filePath = `${dir}/${lang.toLowerCase()}.ts`;
-  const fileContent = `export default ${stringifyWithSingleQuotes(obj, 2)}`;
+  const fileContent = `export default ${stringifyWithSingleQuotes(obj, 2)}\r\n`;
   fs.writeFileSync(filePath, fileContent);
   console.log(`Written file: ${filePath}`);
 
@@ -70,5 +70,3 @@ function writeTsFile(module, lang, obj) {
 }
 
 module.exports = { parseTsFile, writeTsFile };
-
-// parseTsFile("login", "en");

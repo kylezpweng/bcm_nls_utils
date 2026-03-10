@@ -1,5 +1,5 @@
 module.exports = {
-  input: "xlsx/nls_20260225_2.xlsx",
+  input: "xlsx/translation.xlsx",
   source: "source",
   localSource: "/Users/kyleweng/Documents/workspace/bcm_web/src",
   git: {
@@ -8,5 +8,5 @@ module.exports = {
     repo: "bcm_web",
     branch: "main",
   },
-  isCommit: false,
+  isCommit: true,
 };
